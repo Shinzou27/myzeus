@@ -1,0 +1,8 @@
+-- CreateTable
+CREATE TABLE "reports" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "date" DATETIME NOT NULL,
+    "cost" TEXT NOT NULL,
+    "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" DATETIME NOT NULL
+);
