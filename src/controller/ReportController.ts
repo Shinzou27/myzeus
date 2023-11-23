@@ -3,11 +3,11 @@ import { connection } from "../database/connection";
 
 export class ReportController {
     async create(req: Request, res: Response) {
-        const {date, cost, brand, amount, user} = req.body;
+        const {date, cost, brand, amount, userId} = req.body;
         
         const report = await connection.report.create({
             data: {
-                date, cost, brand, amount, user
+                date, cost, brand, amount, userId
             }
         });
         res.json({message: 'Report added'})
