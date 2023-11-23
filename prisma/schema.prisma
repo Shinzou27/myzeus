@@ -14,8 +14,20 @@ model Report {
   id Int @id @default(autoincrement())
   date DateTime
   cost String
+  brand String
+  amount Int
+  userId Int
+  user User @relation("Reports", fields: [userId], references: [id])
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
   @@map("reports")
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  username String @unique
+  password String
+  reports Report[] @relation("Reports")
+  created_at DateTime @default(now())
 }

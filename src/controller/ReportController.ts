@@ -3,18 +3,22 @@ import { connection } from "../database/connection";
 
 export class ReportController {
     async create(req: Request, res: Response) {
-        const {date, cost} = req.body;
+        const {date, cost, brand, amount, user} = req.body;
         
         const report = await connection.report.create({
             data: {
-                date, cost
+                date, cost, brand, amount, user
             }
         });
         res.json({message: 'Report added'})
         return report;
     }
     async list(req: Request, res: Response) {
-        const reports = await connection.report.findMany()
+        const reports = await connection.report.findMany({
+            where: {
+                userId: parseInt(req.query.id as string)
+            }
+        })
         res.json(reports)
     }
     async delete(req: Request, res: Response) {
