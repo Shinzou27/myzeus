@@ -17,6 +17,16 @@ export class UserController {
         const users = await connection.user.findMany();
         res.json(users);
     }
+    async log(req: Request, res: Response) {
+        const {username} = req.body;
+        //const hash = await bcrypt.hash(password as string, 12);
+        const user = await connection.user.findUnique({
+            where: {
+                username: username
+            }
+        });
+        return res.json(user);
+    }
     async updatePassword(req: Request, res: Response) {
         const {id} = req.params;
         const intId = parseInt(id);

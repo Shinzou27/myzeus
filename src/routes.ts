@@ -13,5 +13,5 @@ routes.delete('/reports/:id', reportController.delete);
 routes.put('/reports/:id', reportController.update);
 
 routes.post('/users', userController.create)
-routes.get('/users', userController.list)
+routes.get('/users', userController.log);
 routes.put('/users/:id', userController.updatePassword)
