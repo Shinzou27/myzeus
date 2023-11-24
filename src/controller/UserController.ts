@@ -18,12 +18,15 @@ export class UserController {
         res.json(users);
     }
     async log(req: Request, res: Response) {
-        //const hash = await bcrypt.hash(password as string, 12);
         const user = await connection.user.findUnique({
             where: {
                 username: req.query.username as string
             }
         });
+        if (!user) return res.status(401).send('Usuário não encontrado.');
+        const validation = await bcrypt.compare(req.query.password as string, user.password);
+        if(!validation) return res.status(401).send('Senha incorreta.');
+        console.log(validation);
         return res.json(user);
     }
     async updatePassword(req: Request, res: Response) {
