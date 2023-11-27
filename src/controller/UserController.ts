@@ -34,7 +34,8 @@ export class UserController {
         const intId = parseInt(id);
         const {current} = req.body;
         const hash = await bcrypt.hash(req.body.new as string, 12);
-        if (current == hash) return res.json({message: 'Senhas iguais.'})
+        const validation = await bcrypt.compare(current, hash);
+        if (validation) return res.json({message: 'Senhas iguais.'});
         const user = await connection.user.update({
             where: {
                 id: intId
