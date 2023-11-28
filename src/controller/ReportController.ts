@@ -36,13 +36,13 @@ export class ReportController {
     async update(req: Request, res: Response) {
         const {id} = req.params;
         const intId = parseInt(id);
-        const {date, cost, brand, amount} = req.body;
+        const {date, cost, brand, amount, petId} = req.body;
         const report = await connection.report.update({
             where: {
                 id: intId
             },
             data: {
-                date, cost, brand, amount
+                date, cost, brand, amount, petId
             }
         });
         res.json({message: "Report updated"})
