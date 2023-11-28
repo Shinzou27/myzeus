@@ -1,61 +1,62 @@
 import { Request, Response } from "express";
 import { connection } from "../database/connection";
-
-export class ReportController {
+export class PetController {
     async create(req: Request, res: Response) {
-        const {date, cost, brand, amount, userId, petId} = req.body;
-        
-        const report = await connection.report.create({
+        const {name, type, breed, userId} = req.body;
+        const pet = await connection.pet.create({
             data: {
-                date, cost, brand, amount, userId, petId
+                name,
+                type,
+                breed,
+                userId
             }
         });
-        res.json({message: 'Report added'})
-        return report;
-    }
+        res.json({message: 'Pet adicionado.'});
+        return pet;
+    };
     async list(req: Request, res: Response) {
         const user = parseInt(req.query.id as string);
         if (!user) return res.json({message: 'Usuário não encontrado.'})
-        const reports = await connection.report.findMany({
+        const pets = await connection.pet.findMany({
             where: {
                 userId: user
             }
         })
-        res.json(reports);
+        res.json(pets);
     }
     async delete(req: Request, res: Response) {
         const {id} = req.params;
         const intId = parseInt(id);
-        await connection.report.delete({
+        await connection.pet.delete({
             where: {
                 id: intId
             }
         })
-        res.json({message: "Report deleted"})
+        res.json({message: "Pet removido."})
     }
     async update(req: Request, res: Response) {
         const {id} = req.params;
         const intId = parseInt(id);
-        const {date, cost, brand, amount} = req.body;
-        const report = await connection.report.update({
+        const {name, type, breed} = req.body;
+        const pet = await connection.pet.update({
             where: {
                 id: intId
             },
             data: {
-                date, cost, brand, amount
+                name, type, breed
             }
         });
-        res.json({message: "Report updated"})
-        return report;
+        res.json({message: "Pet atualizado."})
+        return pet;
     }
     async get(req: Request, res: Response) {
         const {id} = req.params;
         const intId = parseInt(id);
-        const report = await connection.report.findUnique({
+        const pet = await connection.pet.findUnique({
             where: {
                 id: intId
             }
         })
-        res.json(report)
+        res.json(pet)
     }
 }

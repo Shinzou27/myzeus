@@ -18,6 +18,8 @@ model Report {
   amount Int
   userId Int
   user User @relation("Reports", fields: [userId], references: [id])
+  petId Int
+  pet Pet @relation("Reports", fields: [petId], references: [id])
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
@@ -29,5 +31,20 @@ model User {
   username String @unique
   password String
   reports Report[] @relation("Reports")
+  pets Pet[] @relation("Pets")
   created_at DateTime @default(now())
+
+  @@map("users")
+}
+
+model Pet {
+  id Int @id @default(autoincrement())
+  name String
+  type String
+  breed String
+  userId Int
+  user User @relation("Pets", fields: [userId], references: [id])
+  reports Report[] @relation("Reports")
+
+  @@map("pets")
 }
