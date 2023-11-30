@@ -23,9 +23,9 @@ export class UserController {
                 username: req.query.username as string
             }
         });
-        if (!user) return res.status(401).send('Usuário não encontrado.');
+        if (!user) return res.status(401).send({message: 'Usuário não encontrado.'});
         const validation = await bcrypt.compare(req.query.password as string, user.password);
-        if(!validation) return res.status(401).send('Senha incorreta.');
+        if(!validation) return res.status(401).send({message: 'Senha incorreta.'});
         console.log(validation);
         return res.json(user);
     }
