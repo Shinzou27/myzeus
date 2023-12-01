@@ -16,7 +16,9 @@ routes.get('/reports/:id', reportController.get);
 
 routes.post('/users', userController.create)
 routes.get('/users', userController.log);
+routes.get('/admin/users', userController.list);
 routes.put('/users/:id', userController.updatePassword);
+routes.delete('/users/:id', userController.delete);
 
 routes.post('/pets', petController.create);
 routes.get('/pets', petController.list);
