@@ -4,13 +4,18 @@ import { connection } from "../database/connection";
 export class ReportController {
     async create(req: Request, res: Response) {
         const {date, cost, brand, amount, userId, petId} = req.body;
+        const dateAsDateObject = new Date(date);
         
+        if (isNaN(dateAsDateObject)) return res.status(404).send({message: 'Data inválida.', type: 'error'});
+        if (isNaN(cost.replace(',','.')) || parseFloat(cost.replace(',','.')) < 0) return res.status(404).send({message: 'Custo inválido.', type: 'error'});
+        if (brand.replace(' ', '').length == 0 || brand.replace(' ', '').length > 20) return res.status(404).send({message: 'Nome de marca longo demais.', type: 'error'});
+        if (amount <= 0 || isNaN(amount)) return res.status(404).send({message: 'Quantidade inválida.', type: 'error'});
         const report = await connection.report.create({
             data: {
                 date, cost, brand, amount, userId, petId
             }
         });
-        res.json({message: 'Report added'})
+        res.json({message: 'Report added', type: 'success'});
         return report;
     }
     async list(req: Request, res: Response) {

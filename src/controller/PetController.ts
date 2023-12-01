@@ -3,6 +3,10 @@ import { connection } from "../database/connection";
 export class PetController {
     async create(req: Request, res: Response) {
         const {name, type, breed, userId} = req.body;
+        if(name.length > 20) return res.send({message: 'Nome longo demais.', type: 'error'});
+        if(name.length === 0 || name.replace(' ', '')) return res.send({message: 'Nome inválido.', type: 'error'});
+        if(breed.length > 20) return res.send({message: 'Nome de raça longo demais.', type: 'error'});
+        if(breed.length === 0 || breed.replace(' ', '')) return res.send({message: 'Nome de raça inválido.', type: 'error'});
         const pet = await connection.pet.create({
             data: {
                 name,
@@ -11,7 +15,7 @@ export class PetController {
                 userId
             }
         });
-        res.json({message: 'Pet adicionado.'});
+        res.json({message: 'Pet adicionado.', type: 'success'});
         return pet;
     };
     async list(req: Request, res: Response) {
