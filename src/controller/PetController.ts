@@ -3,10 +3,10 @@ import { connection } from "../database/connection";
 export class PetController {
     async create(req: Request, res: Response) {
         const {name, type, breed, userId} = req.body;
-        if(name.length > 20) return res.send({message: 'Nome longo demais.', type: 'error'});
-        if(name.length === 0 || name.replace(' ', '')) return res.send({message: 'Nome inválido.', type: 'error'});
-        if(breed.length > 20) return res.send({message: 'Nome de raça longo demais.', type: 'error'});
-        if(breed.length === 0 || breed.replace(' ', '')) return res.send({message: 'Nome de raça inválido.', type: 'error'});
+        if(name.length > 20) return res.send({message: 'Nome longo demais.', type: 'danger'});
+        if(name.length === 0 || name.replace(' ', '').length === 0) return res.send({message: 'Nome inválido.', type: 'danger'});
+        if(breed.length > 20) return res.send({message: 'Nome de raça longo demais.', type: 'danger'});
+        if(breed.length === 0 || breed.replace(' ', '').length === 0) return res.send({message: 'Nome de raça inválido.', type: 'danger'});
         const pet = await connection.pet.create({
             data: {
                 name,
@@ -15,8 +15,7 @@ export class PetController {
                 userId
             }
         });
-        res.json({message: 'Pet adicionado.', type: 'success'});
-        return pet;
+        return res.json({message: 'Pet adicionado.', type: 'success'});
     };
     async list(req: Request, res: Response) {
         const user = parseInt(req.query.id as string);
@@ -31,12 +30,17 @@ export class PetController {
     async delete(req: Request, res: Response) {
         const {id} = req.params;
         const intId = parseInt(id);
+        await connection.report.deleteMany({
+            where: {
+                petId: intId
+            }
+        })
         await connection.pet.delete({
             where: {
                 id: intId
             }
         })
-        res.json({message: "Pet removido."})
+        res.json({message: "Pet e todos os seus relatórios foram removidos."})
     }
     async update(req: Request, res: Response) {
         const {id} = req.params;

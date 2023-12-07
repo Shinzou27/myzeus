@@ -15,7 +15,7 @@ routes.delete('/reports/:id', reportController.delete);
 routes.get('/reports/:id', reportController.get);
 
 routes.post('/users', userController.create)
-routes.get('/users', userController.log);
+routes.post('/login', userController.log);
 routes.get('/admin/users', userController.list);
 routes.put('/users/:id', userController.updatePassword);
 routes.delete('/users/:id', userController.delete);
