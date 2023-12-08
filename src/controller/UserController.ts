@@ -13,7 +13,18 @@ export class UserController {
                     password: hash
                 }
             })
-            return res.json({ message: 'Cadastro realizado com sucesso!', type: 'success' });
+            //res.json({ message: 'Cadastro realizado com sucesso!', type: 'success' });
+            const token = jsonwebtoken.sign({
+                id: user.id,
+                username: user.username,
+            }, process.env.JWT_SECRET!, {
+                expiresIn: '1d'
+            })
+            return res.json({
+                token: token,
+                id: user.id,
+                username: user.username
+            });
         } catch (e: any) {
             console.log(e.message);
             return res.json({ message: 'Falha no cadastro. Usuário já existe.', type: 'danger' })
